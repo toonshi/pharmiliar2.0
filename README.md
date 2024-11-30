@@ -1,4 +1,4 @@
-# Kenya Medical Advisor
+# pharmiliar
 
 An AI-powered medical advisory system that helps users understand their medical conditions, get personalized recommendations, and find appropriate healthcare services in Kenya.
 
