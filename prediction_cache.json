@@ -152,5 +152,24 @@
       "For Migraine, discuss with your doctor if all tests can be done in phases",
       "Prices vary by tier (K, Nk, P). Discuss with the hospital which tier applies to you"
     ]
+  },
+  "my dads been smoking for a while. He gets lung infections and we are worried that he will get lung cancer. He's business oriented and I want him to know how much it could cost him": {
+    "category": "General",
+    "service_type": "Healthcare Cost Analysis",
+    "search_terms": [
+      "lung cancer treatment cost",
+      "lung infection treatment cost"
+    ],
+    "context": "Your dad's smoking history, lung infections, and concerns about lung cancer risk. Also, his business-oriented nature and the potential financial impact of healthcare costs.",
+    "priority": "routine"
+  },
+  "cls": {
+    "category": "GENERAL",
+    "service_type": "General Information",
+    "search_terms": [
+      "clear screen command"
+    ],
+    "context": "The 'cls' command is used to clear the screen in command line interfaces. It does not relate to medical services.",
+    "priority": "routine"
   }
 }
