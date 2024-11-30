@@ -1,20 +1,23 @@
-# Pharmiliar - Medical Services Search
+# Kenya Medical Advisor
 
-An intelligent medical services search system that helps users find and understand available medical services, their costs, and get AI-powered recommendations.
+An AI-powered medical advisory system that helps users understand their medical conditions, get personalized recommendations, and find appropriate healthcare services in Kenya.
 
 ## Features
 
-- Smart natural language search for medical services
-- AI-powered service recommendations
-- Price range information
-- Support for both Radiology and General services
-- Intelligent handling of medical terminology and synonyms
+- Interactive medical consultation through natural language
+- Personalized medical assessment based on symptoms
+- Cost-aware treatment plans (Standard, Budget, and Comprehensive)
+- Integration with Kenyan healthcare facilities and services
+- Automated report generation and storage
+- Vector database for intelligent symptom matching
+- Price information for medical services
 
-## Components
+## Technology Stack
 
-- `service_mapper_final2.py`: Core service search functionality
-- `ai_service_mapper.py`: OpenAI-powered intelligent search
-- `search_services.py`: User-friendly command-line interface
+- Python 3.8+
+- OpenAI GPT-3.5 for medical analysis
+- ChromaDB for vector similarity search
+- SQLite for medical services database
 
 ## Setup
 
@@ -30,7 +33,7 @@ pip install -r requirements.txt
 ```
 
 3. Set up your environment:
-- Create a `.env` file in the project root
+- Create a `config` directory and add a `.env` file
 - Add your OpenAI API key:
 ```
 OPENAI_API_KEY=your-api-key-here
@@ -38,31 +41,71 @@ OPENAI_API_KEY=your-api-key-here
 
 ## Usage
 
-Run the interactive search interface:
+Run the medical advisor:
 ```bash
-python search_services.py
+python src/kenya_medical_advisor.py
 ```
 
-Example queries:
-- "I need an x-ray for my chest pain"
-- "Looking for a general consultation"
-- "Need an ultrasound for pregnancy"
-- "What kind of scan for a head injury?"
+The system will:
+1. Ask for your name and location
+2. Listen to your medical concern
+3. Ask relevant follow-up questions
+4. Generate a comprehensive assessment including:
+   - Risk level evaluation
+   - Immediate steps required
+   - Recommended tests
+   - Warning signs to watch for
+   - Specialist recommendations
+5. Provide three treatment plans:
+   - Standard Plan
+   - Budget Plan (cost-saving options)
+   - Comprehensive Plan (full coverage)
+6. Save detailed reports in both JSON and TXT formats
+
+## Project Structure
+
+```
+pharmiliar/
+├── config/
+│   └── .env              # Environment variables
+├── db/
+│   ├── chroma.sqlite3    # Vector database for medical knowledge
+│   └── ...              # ChromaDB files
+├── reports/              # Generated medical reports
+├── src/
+│   ├── kenya_medical_advisor.py  # Main application
+│   ├── data_enrichment.py        # Service data processing
+│   └── cost_estimator.py         # Price estimation
+└── requirements.txt      # Python dependencies
+```
 
 ## Database Schema
 
-The system uses SQLite with the following main table:
+The system uses two databases:
 
+1. ChromaDB (Vector Database):
+- Stores medical knowledge embeddings
+- Enables semantic search for conditions
+- Matches symptoms to potential causes
+
+2. SQLite (Service Database):
 ```sql
 CREATE TABLE services (
     description TEXT,
     category TEXT,
-    code TEXT,
     base_price REAL,
-    max_price REAL
+    metadata JSON
 );
 ```
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
+Contributions are welcome! Please feel free to submit issues and enhancement requests.
+
+## License
+
+[Your chosen license]
+
+## Disclaimer
+
+This system is designed to provide general medical information and guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
