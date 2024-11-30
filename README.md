@@ -104,8 +104,8 @@ Contributions are welcome! Please feel free to submit issues and enhancement req
 
 ## License
 
-[Your chosen license]
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Disclaimer
 
-This system is designed to provide general medical information and guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+This system is designed to provide general medical information and guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment.(At least not yet lol). Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
