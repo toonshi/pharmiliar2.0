@@ -27,6 +27,7 @@ wheels/
 # Databases
 *.db
 db/
+hospital_services.db
 pharmiliar.db
 
 # IDE
@@ -38,9 +39,11 @@ pharmiliar.db
 # Logs
 *.log
 
-# Local data
-data/
+# Local data and analysis
+data/raw/
+data/processed/
 reports/
+src/analysis/outputs/
 
 # Cache files
 *_cache.json
@@ -49,6 +52,8 @@ prediction_cache.json
 
 # Generated files
 *.png
+src/analysis/figures/
 
 # ChromaDB
 chroma.sqlite3
+db/chroma/

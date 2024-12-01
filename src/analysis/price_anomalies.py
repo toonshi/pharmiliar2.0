@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 from sqlalchemy import func
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from models import Department, Service
 from queries import get_session
 
