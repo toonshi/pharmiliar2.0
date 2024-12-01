@@ -1,0 +1,79 @@
+# Hospital Data Processing Configuration
+
+# Data Extraction
+extraction:
+  supported_formats:
+    - xlsx
+    - xls
+    - csv
+  required_columns:
+    - code
+    - description
+    - normal_rate
+    - special_rate
+    - non_ea_rate
+  optional_columns:
+    - department
+    - gl_account
+    - variant_type
+
+# Data Cleaning
+cleaning:
+  remove_empty_rows: true
+  strip_whitespace: true
+  standardize_case: true
+  price_columns:
+    - normal_rate
+    - special_rate
+    - non_ea_rate
+  price_cleaning:
+    remove_currency: true
+    remove_commas: true
+    default_value: 0.0
+
+# Data Enrichment
+enrichment:
+  departments:
+    RADIOLOGY: [x-ray, scan, ultrasound, mri, ct, imaging]
+    LABORATORY: [lab, test, blood, urine, sample, culture]
+    PHARMACY: [drug, medication, tablet, capsule, injection]
+    CONSULTATION: [consultation, visit, checkup, review]
+    SURGERY: [surgery, operation, procedure, incision]
+    EMERGENCY: [emergency, casualty, accident, trauma]
+    MATERNITY: [delivery, birth, prenatal, postnatal, obstetric]
+    PEDIATRIC: [child, baby, infant, pediatric]
+    DENTAL: [dental, tooth, teeth, oral]
+    PHYSIOTHERAPY: [physio, therapy, rehabilitation, exercise]
+    OUTPATIENT: [opd, outpatient, clinic]
+    INPATIENT: [admission, ward, bed, inpatient]
+  
+  service_types:
+    DIAGNOSTIC: [test, scan, x-ray, examination, analysis]
+    THERAPEUTIC: [treatment, therapy, surgery, procedure]
+    PREVENTIVE: [vaccination, immunization, screening, prevention]
+    CONSULTATION: [consultation, counseling, advisory]
+    MEDICATION: [drug, medicine, prescription]
+    EMERGENCY: [emergency, urgent, casualty]
+
+# Database Setup
+database:
+  naming_pattern: "{hospital_name}_services.db"
+  tables:
+    - departments
+    - services
+    - price_history
+  indexes:
+    - services.code
+    - services.department_id
+    - departments.name
+
+# Analysis
+analysis:
+  generate_reports:
+    - price_anomalies
+    - department_summary
+    - service_distribution
+  output_formats:
+    - excel
+    - png
+  report_directory: "reports/{hospital_name}"
