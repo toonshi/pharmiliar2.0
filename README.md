@@ -2,110 +2,53 @@
 
 An AI-powered medical advisory system that helps users understand their medical conditions, get personalized recommendations, and find appropriate healthcare services in Kenya.
 
-## Features
+## Available Advisors
 
-- Interactive medical consultation through natural language
-- Personalized medical assessment based on symptoms
-- Cost-aware treatment plans (Standard, Budget, and Comprehensive)
-- Integration with Kenyan healthcare facilities and services
-- Automated report generation and storage
-- Vector database for intelligent symptom matching
-- Price information for medical services
+### 1. Kenya Medical Advisor (`kenya_medical_advisor.py`)
+- Primary medical consultation system for Kenya
+- Provides localized recommendations and cost estimates
+- Includes knowledge of Kenyan healthcare facilities and services
+- Generates comprehensive reports with treatment plans
+- Optimized for Kenyan healthcare context and pricing
 
-## Technology Stack
+### 2. Optimized Advisor (`optimized_advisor.py`)
+- Enhanced version with improved performance
+- Faster response times and more efficient resource usage
+- Better handling of complex medical queries
+- Includes caching for frequently accessed information
+- Streamlined conversation flow and reduced API calls
 
-- Python 3.8+
-- OpenAI GPT-3.5 for medical analysis
-- ChromaDB for vector similarity search
-- SQLite for medical services database
+### 3. Standard Advisor (`medical_advisor.py`)
+- Base version of the medical advisory system
+- General medical consultation without region-specific features
+- Suitable for basic medical inquiries and symptom checking
+- Foundation for other specialized versions
 
-## Setup
+## Use Cases
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/pharmiliar.git
-cd pharmiliar
-```
+### For Patients
+- Get initial medical assessment for symptoms
+- Understand potential conditions and their severity
+- Receive cost-aware treatment recommendations
+- Find appropriate healthcare facilities nearby
+- Get emergency care guidance when needed
+- Compare treatment costs across different facilities
+- Access medical information in simple, understandable terms
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+### For Healthcare Providers
+- Access structured patient symptom reports
+- Review AI-generated preliminary assessments
+- Get cost estimates for different treatment plans
+- Track patient consultation history
+- Generate detailed medical reports
+- Support decision-making with AI-backed insights
+- Streamline patient triage process
 
-3. Set up your environment:
-- Create a `config` directory and add a `.env` file
-- Add your OpenAI API key:
-```
-OPENAI_API_KEY=your-api-key-here
-```
-
-## Usage
-
-Run the medical advisor:
-```bash
-python src/kenya_medical_advisor.py
-```
-
-The system will:
-1. Ask for your name and location
-2. Listen to your medical concern
-3. Ask relevant follow-up questions
-4. Generate a comprehensive assessment including:
-   - Risk level evaluation
-   - Immediate steps required
-   - Recommended tests
-   - Warning signs to watch for
-   - Specialist recommendations
-5. Provide three treatment plans:
-   - Standard Plan
-   - Budget Plan (cost-saving options)
-   - Comprehensive Plan (full coverage)
-6. Save detailed reports in both JSON and TXT formats
-
-## Project Structure
-
-```
-pharmiliar/
-├── config/
-│   └── .env              # Environment variables
-├── db/
-│   ├── chroma.sqlite3    # Vector database for medical knowledge
-│   └── ...              # ChromaDB files
-├── reports/              # Generated medical reports
-├── src/
-│   ├── kenya_medical_advisor.py  # Main application
-│   ├── data_enrichment.py        # Service data processing
-│   └── cost_estimator.py         # Price estimation
-└── requirements.txt      # Python dependencies
-```
-
-## Database Schema
-
-The system uses two databases:
-
-1. ChromaDB (Vector Database):
-- Stores medical knowledge embeddings
-- Enables semantic search for conditions
-- Matches symptoms to potential causes
-
-2. SQLite (Service Database):
-```sql
-CREATE TABLE services (
-    description TEXT,
-    category TEXT,
-    base_price REAL,
-    metadata JSON
-);
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues and enhancement requests.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Disclaimer
-
-This system is designed to provide general medical information and guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment.(At least not yet lol). Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+### For Medical Facilities
+- Integration with facility databases
+- Cost estimation for medical services
+- Patient referral management
+- Service availability tracking
+- Resource allocation optimization
+- Treatment cost benchmarking
+- Patient flow management
