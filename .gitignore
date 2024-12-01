@@ -8,7 +8,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -45,10 +44,10 @@ reports/
 
 # Cache files
 *_cache.json
-*.cache
+analysis_cache.json
+prediction_cache.json
 
-# Analysis files
-*.xlsx
+# Generated files
 *.png
 
 # ChromaDB
