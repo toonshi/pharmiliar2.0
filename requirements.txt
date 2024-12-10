@@ -7,5 +7,5 @@ networkx
 openpyxl
 tenacity>=8.2.0
 chromadb
-yt-dlp
-
+requests
+streamlit

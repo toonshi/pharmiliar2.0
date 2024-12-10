@@ -1,3 +1,5 @@
+""" An implementation with everything in one place.Incase you need that for some reaseom"""
+
 import json
 import openai
 from pathlib import Path
