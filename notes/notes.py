@@ -6,8 +6,21 @@ st.title("Doctor's Appointment Notes")
 
 st.sidebar.header("Previous Illnesses")
 
+# Set up the username in session state if it's not set
+if 'username' not in st.session_state:
+    st.session_state.username = ''
+
+# Input for the username (if it's not already set)
+if st.session_state.username == '':
+    st.session_state.username = st.sidebar.text_input("Username", "")
+
 # Display illnesses in the sidebar with options to edit or delete
-async def display_illnesses(username):
+async def display_illnesses():
+    username = st.session_state.username
+    if not username:
+        st.sidebar.write("Please enter a username first.")
+        return
+
     try:
         data = await load_user_basket(username)
         if data:
@@ -16,32 +29,28 @@ async def display_illnesses(username):
                 for appointment in appointments:
                     st.sidebar.write(f"- {appointment}")
                     
-                # Create two columns for Edit and Delete buttons side by side
-                col1, col2 = st.sidebar.columns(2)
-                
-                with col1:
-                    if st.button(f"Edit"):  # Notice change here to st.button
-                        new_illness = st.sidebar.text_input("New Illness Name", illness)
-                        new_appointments = st.sidebar.text_area("New Appointment Notes", "\n".join(appointments))
-                        if st.sidebar.button(f"Save Edit"):
-                            if new_illness and new_appointments:
-                                new_appointments_list = new_appointments.split("\n")
-                                try:
-                                    await edit_illness_async(username, illness, new_illness, new_appointments_list)
-                                    st.sidebar.success(f"Entry '{illness}' edited successfully.")
-                                    st.experimental_rerun()
-                                except Exception as e:
-                                    st.sidebar.error(f"Error editing illness: {e}")
-
-                with col2:
-                    if st.button(f"Delete"):  # Notice change here to st.button
-                        if st.sidebar.button(f"Confirm Delete {illness}"):
+                # Buttons for edit and delete (without handling the button press logic)
+                if st.sidebar.button(f"Edit {illness}"):  # Edit button
+                    new_illness = st.sidebar.text_input("New Illness Name", illness)
+                    new_appointments = st.sidebar.text_area("New Appointment Notes", "\n".join(appointments))
+                    if st.sidebar.button(f"Save Edit for {illness}"):
+                        if new_illness and new_appointments:
+                            new_appointments_list = new_appointments.split("\n")
                             try:
-                                await delete_illness_async(username, illness)
-                                st.sidebar.success(f"Illness '{illness}' deleted successfully.")
+                                await edit_illness_async(username, illness, new_illness, new_appointments_list)
+                                st.sidebar.success(f"Entry '{illness}' edited successfully.")
                                 st.experimental_rerun()
                             except Exception as e:
-                                st.sidebar.error(f"Error deleting illness: {e}")
+                                st.sidebar.error(f"Error editing illness: {e}")
+
+                if st.sidebar.button(f"Delete {illness}"):  # Delete button
+                    if st.sidebar.button(f"Confirm Delete {illness}"):
+                        try:
+                            await delete_illness_async(username, illness)
+                            st.sidebar.success(f"Illness '{illness}' deleted successfully.")
+                            st.experimental_rerun()
+                        except Exception as e:
+                            st.sidebar.error(f"Error deleting illness: {e}")
         else:
             st.sidebar.write("No illnesses recorded yet.")
     except Exception as e:
@@ -49,12 +58,13 @@ async def display_illnesses(username):
 
 # Main form for adding new notes
 with st.form("add_note_form"):
-    username = st.text_input("Username")
     illness = st.text_input("Illness")
     appointment_note = st.text_area("Appointment Note")
     submitted = st.form_submit_button("Add Note")
 
     if submitted:
+        username = st.session_state.username  # Use the stored username
+        
         if username and illness and appointment_note:
             new_note = {illness: [appointment_note]}
             
@@ -65,8 +75,8 @@ with st.form("add_note_form"):
             # Trigger a rerun to refresh the data in the sidebar
             st.rerun()
         else:
-            st.error("Please fill in all fields (username, illness, and appointment note).")
+            st.error("Please fill in all fields (illness and appointment note).")
 
 # Run the asynchronous display_illnesses function in the event loop
-if username:
-    asyncio.run(display_illnesses(username))
+if st.session_state.username:
+    asyncio.run(display_illnesses())
