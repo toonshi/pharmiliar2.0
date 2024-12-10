@@ -73,3 +73,46 @@ async def load_user_basket(username):
     """ Loads the user's basket (either from the cache or by fetching it). """
     basket_data = await fetch_basket_async(username)
     return basket_data
+
+async def edit_illness_async(username, old_illness, new_illness, new_appointments):
+    """Edit an illness in the basket data."""
+    basket_data = await fetch_basket_async(username)
+
+    if old_illness in basket_data["illnesses"]:
+        # Remove the old illness
+        del basket_data["illnesses"][old_illness]
+        
+        # Add the new illness
+        basket_data["illnesses"][new_illness] = new_appointments
+
+        # Update the basket data on the server
+        url = f"{PANTRY_URL}/basket/{username}"
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=basket_data) as response:
+                if response.status == 200:
+                    basket_cache[username] = basket_data
+                    return username
+                else:
+                    raise Exception("Error saving basket data after editing illness.")
+    else:
+        raise Exception(f"Illness '{old_illness}' not found.")
+
+async def delete_illness_async(username, illness_to_delete):
+    """Deletes an illness from the user's basket."""
+    basket_data = await fetch_basket_async(username)
+
+    if illness_to_delete in basket_data["illnesses"]:
+        # Remove the illness
+        del basket_data["illnesses"][illness_to_delete]
+
+        # Update the basket data on the server
+        url = f"{PANTRY_URL}/basket/{username}"
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=basket_data) as response:
+                if response.status == 200:
+                    basket_cache[username] = basket_data
+                    return username
+                else:
+                    raise Exception("Error saving basket data after deleting illness.")
+    else:
+        raise Exception(f"Illness '{illness_to_delete}' not found.")
