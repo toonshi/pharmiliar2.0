@@ -9,3 +9,4 @@ tenacity>=8.2.0
 chromadb
 requests
 streamlit
+aiohttp

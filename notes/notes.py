@@ -1,14 +1,16 @@
 import streamlit as st
-from basket_manager import add_to_basket, load_all_baskets
+import asyncio
+from basket_manager import add_to_basket_async, load_all_baskets
 
 st.title("Doctor's Appointment Notes")
 
 st.sidebar.header("Previous Illnesses")
 
 # Display illnesses in the sidebar
-def display_illnesses():
+async def display_illnesses():
     try:
-        data = load_all_baskets()
+        # Await the asynchronous function load_all_baskets
+        data = await load_all_baskets()
         if data:
             for illness, appointments in data.items():
                 st.sidebar.subheader(illness)
@@ -28,7 +30,9 @@ with st.form("add_note_form"):
     if submitted:
         if illness and appointment_note:
             new_note = {illness: [appointment_note]}
-            basket_name = add_to_basket(new_note)
+            
+            # Await the asynchronous function add_to_basket_async
+            basket_name = asyncio.run(add_to_basket_async(new_note))
             st.success(f"Note added to {basket_name}.")
             
             # Trigger a rerun to refresh the data in the sidebar
@@ -36,5 +40,5 @@ with st.form("add_note_form"):
         else:
             st.error("Please fill in both the illness and appointment note.")
 
-# Display illnesses after potentially adding a new note
-display_illnesses()
+# Run the asynchronous display_illnesses function in the event loop
+asyncio.run(display_illnesses())
