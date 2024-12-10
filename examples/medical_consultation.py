@@ -1,5 +1,3 @@
-"""Example script for the final medical advisor system."""
-
 import os
 import sys
 from pathlib import Path
@@ -10,7 +8,7 @@ from dotenv import load_dotenv
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root / "src"))
 
-from medical_advisor import FinalAdvisorV2 as MedicalAdvisor
+import medical_advisor 
 
 def format_currency(amount: float) -> str:
     """Format amount as KSH currency."""
@@ -67,10 +65,10 @@ def main():
     try:
         # Initialize medical advisor
         print("\nInitializing medical advisor system...")
-        advisor = MedicalAdvisor(api_key)
+        advisor = medical_advisor.Advisor(api_key)
         
         # Example consultation
-        symptoms = "Fever of 38.5°C, persistent dry cough, and fatigue for 3 days"
+        symptoms = "Headache,burning sensation when urinating,sores on the penis"
         print(f"\nAnalyzing symptoms: {symptoms}")
         print("=" * 80)
         
@@ -82,7 +80,7 @@ def main():
         
         # Get treatment plan
         print("\nGenerating treatment plan...")
-        plan = advisor.get_treatment_plan("Upper respiratory infection", "standard")
+        plan = advisor.get_treatment_plan("STI", "standard")
         
         # Print service recommendations
         print_services(plan["available_services"])

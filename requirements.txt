@@ -6,3 +6,6 @@ numpy>=1.21.0
 networkx
 openpyxl
 tenacity>=8.2.0
+chromadb
+yt-dlp
+

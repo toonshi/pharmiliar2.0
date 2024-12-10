@@ -57,3 +57,4 @@ src/analysis/figures/
 # ChromaDB
 chroma.sqlite3
 db/chroma/
+fam/

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root / "src"))
 
-from medical_advisor import MedicalAdvisor
+import medical_advisor  
 from medical_advisor.config import ENV_PATH
 
 def main():
@@ -22,9 +22,13 @@ def main():
         return
     
     # Initialize medical advisor and load services
-    advisor = MedicalAdvisor(api_key)
+    advisor = medical_advisor.MedicalAdvisor(api_key)
     print("\nLoading medical services into database...")
     advisor.db.load_services()
 
 if __name__ == "__main__":
     main()
+
+
+
+

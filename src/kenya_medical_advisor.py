@@ -452,6 +452,9 @@ class ChromaMedicalAdvisor:
         
         return "\n".join(output)
 
+
+
+
 def main():
     """Run the medical advisor system."""
     # Load environment variables
@@ -475,7 +478,7 @@ def main():
         
         condition = input("\nDescribe your medical concern (or 'quit' to exit): ").strip()
         
-        if condition.lower() in ['quit', 'exit', 'q']:
+        if condition.lower() in ['quit', 'exit', 'q','escape']:
             break
             
         if not condition:

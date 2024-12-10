@@ -2,7 +2,7 @@
 
 from typing import Dict
 
-class ServicePriorityV2:
+class ServicePriority:
     # Keywords for different service types
     SERVICE_KEYWORDS = {
         "basic_test": [

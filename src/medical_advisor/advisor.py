@@ -1,4 +1,4 @@
-"""Final medical advisor with improved service prioritization."""
+
 
 import json
 from datetime import datetime
@@ -6,9 +6,9 @@ import openai
 from typing import Dict, List
 from pathlib import Path
 from .services import ServiceManager
-from .service_priority_v2 import ServicePriorityV2
+from .service_priority import ServicePriority
 
-class FinalAdvisorV2:
+class Advisor:
     def __init__(self, api_key: str):
         """Initialize the medical advisor system."""
         self.client = openai.OpenAI(api_key=api_key)
@@ -127,12 +127,12 @@ class FinalAdvisorV2:
             scored_services = []
             for service in category_services:
                 # Use priority weight as base score
-                priority = ServicePriorityV2.get_service_priority(service)
-                base_score = ServicePriorityV2.get_priority_weight(priority)
+                priority = ServicePriority.get_service_priority(service)
+                base_score = ServicePriority.get_priority_weight(priority)
                 
                 # Adjust score based on price (lower price = higher score)
                 price_factor = 1.0
-                if float(service["price"]) <= ServicePriorityV2.PRICE_THRESHOLDS["basic"]:
+                if float(service["price"]) <= ServicePriority.PRICE_THRESHOLDS["basic"]:
                     price_factor = 1.5
                 
                 final_score = base_score * price_factor
@@ -140,7 +140,7 @@ class FinalAdvisorV2:
                 scored_services.append(service)
             
             # Deduplicate similar services
-            unique_services = ServicePriorityV2.consolidate_oxygen_services(scored_services)
+            unique_services = ServicePriority.consolidate_oxygen_services(scored_services)
             
             # Add to results
             formatted_results["categories"][category] = unique_services
