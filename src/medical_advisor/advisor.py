@@ -1,5 +1,3 @@
-
-
 import json
 from datetime import datetime
 import openai
@@ -52,15 +50,16 @@ class Advisor:
         """Analyze symptoms and provide medical assessment."""
         response = self.client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": """You are a medical expert. Analyze the symptoms and provide:
-                1. Possible conditions (list the most likely ones first)
-                2. Risk level (Low, Medium, High) with explanation
-                3. Recommended immediate steps
-                4. Warning signs to watch for
-                5. Type of specialist needed (if any)
-                
-                Format your response in clear sections with bullet points."""},
+            messages=[{
+                "role": "system", 
+                "content": """You are a medical expert. Analyze the symptoms and provide:
+                    1. Possible conditions (list the most likely ones first)
+                    2. Risk level (Low, Medium, High) with explanation
+                    3. Recommended immediate steps
+                    4. Warning signs to watch for
+                    5. Type of specialist needed (if any)
+
+                    Format your response in clear sections with bullet points."""},
                 {"role": "user", "content": f"Analyze these symptoms: {symptoms}"}
             ]
         )
@@ -71,8 +70,9 @@ class Advisor:
         # First, determine condition type
         type_response = self.client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Classify the medical condition into one of these types: respiratory, cardiac, digestive, musculoskeletal, neurological, or other. Respond with just the type."},
+            messages=[{
+                "role": "system", 
+                "content": "Classify the medical condition into one of these types: respiratory, cardiac, digestive, musculoskeletal, neurological, or other. Respond with just the type."},
                 {"role": "user", "content": f"Classify this condition: {condition}"}
             ]
         )
@@ -172,56 +172,109 @@ class Advisor:
 
     def get_treatment_plan(self, condition: str, budget_level: str = "standard") -> Dict:
         """Generate a comprehensive treatment plan with cost estimates."""
-        # Get service recommendations first
-        services = self.get_service_recommendations(condition, budget_level)
-        
-        # Create a categorized summary of available services
-        service_summary = "\nRecommended Medical Services:"
-        
-        if services["categories"]["diagnostic"]:
-            service_summary += "\n\nDiagnostic Tests (in order of priority):"
-            for s in services["categories"]["diagnostic"]:
-                service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
-            
-        if services["categories"]["treatment"]:
-            service_summary += "\n\nTreatments (in order of priority):"
-            for s in services["categories"]["treatment"]:
-                service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
-            
-        if services["categories"]["monitoring"]:
-            service_summary += "\n\nMonitoring Services (in order of priority):"
-            for s in services["categories"]["monitoring"]:
-                service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
-        
-        # Generate treatment plan
-        plan_response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": f"""You are a medical expert creating a treatment plan. 
-                Consider these available services:{service_summary}
-                
-                Total estimated cost: KSH {services['total_cost']:,.2f}
-                Departments involved: {', '.join(services['departments'])}
-                Budget level: {budget_level}
-                
-                Create a {budget_level} budget treatment plan that includes:
-                1. Essential diagnostic tests (start with basic tests before advanced imaging)
-                2. Recommended treatments (prioritize cost-effective options)
-                3. Required monitoring and follow-up
-                4. Timeline for all services
-                5. Cost-saving suggestions
-                6. Important precautions
-                
-                Format your response in clear sections with bullet points.
-                Focus on essential services and cost-effective options first."""},
-                {"role": "user", "content": f"Create a treatment plan for: {condition}"}
-            ]
-        )
-        
-        return {
-            "condition": condition,
-            "budget_level": budget_level,
-            "available_services": services,
-            "treatment_plan": plan_response.choices[0].message.content,
-            "total_estimated_cost": services["total_cost"]
-        }
+        try:
+            # Get service recommendations first
+            services = self.get_service_recommendations(condition, budget_level)
+
+            # Check if services are returned correctly
+            if not services or not services.get("categories"):
+                print(f"Error: No services found for condition '{condition}' with budget '{budget_level}'")
+                return {
+                    "condition": condition,
+                    "budget_level": budget_level,
+                    "available_services": {},
+                    "treatment_plan": "No services available.",
+                    "total_estimated_cost": 0.0
+                }
+
+            # Create a categorized summary of available services
+            service_summary = "\nRecommended Medical Services:"
+
+            if services["categories"].get("diagnostic"):
+                service_summary += "\n\nDiagnostic Tests (in order of priority):"
+                for s in services["categories"]["diagnostic"]:
+                    service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
+
+            if services["categories"].get("treatment"):
+                service_summary += "\n\nTreatments (in order of priority):"
+                for s in services["categories"]["treatment"]:
+                    service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
+
+            if services["categories"].get("monitoring"):
+                service_summary += "\n\nMonitoring Services (in order of priority):"
+                for s in services["categories"]["monitoring"]:
+                    service_summary += f"\n- {s['description']} ({s['department']}) - KSH {s['price']:,.2f}"
+
+            # Check if the service_summary is populated
+            if not service_summary.strip():
+                print("Error: Service summary is empty.")
+                return {
+                    "condition": condition,
+                    "budget_level": budget_level,
+                    "available_services": services,
+                    "treatment_plan": "No valid services to create a treatment plan.",
+                    "total_estimated_cost": services.get("total_cost", 0.0)
+                }
+
+            # Generate treatment plan
+            plan_response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{
+                    "role": "system", 
+                    "content": f"""You are a medical expert creating a treatment plan. 
+                    Consider these available services:{service_summary}
+
+                    Total estimated cost: KSH {services['total_cost']:,.2f}
+                    Departments involved: {', '.join(services['departments'])}
+                    Budget level: {budget_level}
+
+                    Create a {budget_level} budget treatment plan that includes:
+                    1. Essential diagnostic tests (start with basic tests before advanced imaging)
+                    2. Recommended treatments (prioritize cost-effective options)
+                    3. Required monitoring and follow-up
+                    4. Timeline for all services
+                    5. Cost-saving suggestions
+                    6. Important precautions
+
+                    Format your response in clear sections with bullet points.
+                    Focus on essential services and cost-effective options first."""},
+                    {"role": "user", "content": f"Create a treatment plan for: {condition}"}
+                ]
+            )
+
+            # Check if plan_response is valid and contains choices
+            if not plan_response or not plan_response.get("choices"):
+                print(f"Error: No valid response from OpenAI API for condition '{condition}'")
+                return {
+                    "condition": condition,
+                    "budget_level": budget_level,
+                    "available_services": services,
+                    "treatment_plan": "No treatment plan generated.",
+                    "total_estimated_cost": services.get("total_cost", 0.0)
+                }
+
+            # Get the generated treatment plan
+            treatment_plan = plan_response.choices[0].message.content if plan_response.choices else "No treatment plan available."
+
+            # Return the treatment plan with all relevant details
+            return {
+                "condition": condition,
+                "budget_level": budget_level,
+                "available_services": services,
+                "treatment_plan": treatment_plan,
+                "total_estimated_cost": services.get("total_cost", 0.0)
+            }
+
+        except Exception as e:
+            print(f"Error during treatment plan generation: {str(e)}")
+            import traceback
+            traceback.print_exc()
+
+            # Return a default response in case of an exception
+            return {
+                "condition": condition,
+                "budget_level": budget_level,
+                "available_services": {},
+                "treatment_plan": "Error generating treatment plan.",
+                "total_estimated_cost": 0.0
+            }

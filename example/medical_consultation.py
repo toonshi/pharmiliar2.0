@@ -1,14 +1,12 @@
-import os
 import sys
-from pathlib import Path
+import os
 from datetime import datetime
-from dotenv import load_dotenv
 
-# Add src directory to Python path
-project_root = Path(__file__).parent.parent
-sys.path.append(str(project_root / "src"))
 
-import medical_advisor 
+# Add the root folder to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from config import OPENAI_API_KEY
+from src import medical_advisor 
 
 def format_currency(amount: float) -> str:
     """Format amount as KSH currency."""
@@ -54,12 +52,12 @@ def print_services(services: dict):
 
 def main():
     # Load environment variables
-    env_path = project_root / "config" / ".env"
-    load_dotenv(env_path)
-    api_key = os.getenv("OPENAI_API_KEY")
+
+
+    api_key = OPENAI_API_KEY
     
     if not api_key:
-        print(f"Error: OPENAI_API_KEY not found in {env_path}")
+        print(f"Error: OPENAI_API_KEY not found ")
         return
     
     try:
