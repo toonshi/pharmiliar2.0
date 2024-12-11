@@ -72,7 +72,7 @@ class Advisor:
             model="gpt-3.5-turbo",
             messages=[{
                 "role": "system", 
-                "content": "Classify the medical condition into one of these types: respiratory, cardiac, digestive, musculoskeletal, neurological, or other. Respond with just the type."},
+                "content": "Classify the medical condition into one of these types: respiratory, cardiac, digestive, musculoskeletal, neurological, endocrine, infectious, dermatological, hematological, renal, reproductive, psychiatric, immunological, oncological, pediatric, geriatric, trauma/injury or other. Respond with just the type."},
                 {"role": "user", "content": f"Classify this condition: {condition}"}
             ]
         )
