@@ -10,7 +10,17 @@ from src import medical_advisor
 
 api_key = OPENAI_API_KEY
 advisor = medical_advisor.Advisor(api_key)
-plan = advisor.get_service_recommendations("food poisoning","standard")
+plan = advisor.get_service_recommendations("fever","standard")
 
 if __name__ == "__main__":
   print (plan)
+
+
+
+
+
+      
+    
+    
+    
+    

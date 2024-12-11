@@ -66,7 +66,7 @@ class ServiceManager:
             
             # Create fresh collection
             print("\nResetting ChromaDB collection...")
-            collection = self._reset_collection("medical_services_v2")
+            collection = self._reset_collection("medical_services")
             
             # Prepare data for ChromaDB
             documents = []
@@ -122,7 +122,7 @@ class ServiceManager:
         """Get the medical services collection."""
         try:
             return self.chroma_client.get_collection(
-                name="medical_services_v2",
+                name="medical_services",
                 embedding_function=self.embedding_func
             )
         except ValueError:

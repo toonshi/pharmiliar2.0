@@ -1,6 +1,7 @@
 """ An implementation with everything in one place.Incase you need that for some reaseom"""
 
 import json
+import sys
 import openai
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
@@ -9,6 +10,9 @@ import os
 import chromadb
 from datetime import datetime
 import re
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from config import OPENAI_API_KEY
 
 class ChromaMedicalAdvisor:
     def __init__(self, api_key: str):
@@ -460,10 +464,9 @@ class ChromaMedicalAdvisor:
 def main():
     """Run the medical advisor system."""
     # Load environment variables
-    load_dotenv(os.path.join(Path(__file__).parent.parent, "config", ".env"))
     
     # Get API key
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = OPENAI_API_KEY
     if not api_key:
         print("Error: OPENAI_API_KEY not found in environment variables")
         return

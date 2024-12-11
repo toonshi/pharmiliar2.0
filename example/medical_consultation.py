@@ -66,7 +66,7 @@ def main():
         advisor = medical_advisor.Advisor(api_key)
         
         # Example consultation
-        symptoms = "Headache,burning sensation when urinating,sores on the penis"
+        symptoms = "Fever of 38.5°C, persistent dry cough, and fatigue for 3 days"
         print(f"\nAnalyzing symptoms: {symptoms}")
         print("=" * 80)
         
@@ -78,7 +78,7 @@ def main():
         
         # Get treatment plan
         print("\nGenerating treatment plan...")
-        plan = advisor.get_treatment_plan("STI", "standard")
+        plan = advisor.get_treatment_plan("Upper respiratory infection", "standard")
         
         # Print service recommendations
         print_services(plan["available_services"])
