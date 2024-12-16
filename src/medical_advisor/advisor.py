@@ -19,40 +19,145 @@ class Advisor:
         
         # Define search priorities
         self.search_priorities = {
-            "respiratory": {
-                "diagnostic": [
-                    "throat swab culture respiratory infection",
-                    "sputum analysis respiratory infection",
-                    "blood test complete blood count infection",
-                    "chest x-ray respiratory infection"
-                ],
-                "treatment": [
-                    "antibiotics treatment respiratory infection",
-                    "nebulizer treatment respiratory infection",
-                    "oxygen therapy respiratory infection"
-                ],
-                "monitoring": [
-                    "vital signs monitoring respiratory",
-                    "oxygen saturation monitoring"
-                ]
-            },
-            "infectious": {
-                "diagnostic": [
-                    "blood culture for infectious fever",
-                    "urine culture for fever infection",
-                    "chest x-ray infectious fever"
-                ],
-                "treatment": [
-                    "antibiotics for infectious fever",
-                    "antipyretics for fever reduction"
-                ],
-                "monitoring": [
-                    "temperature monitoring fever",
-                    "vital signs monitoring fever"
-                ]
-            },
-            # Add other condition types as needed
+        "respiratory": {
+            "diagnostic": [
+                "throat swab culture for respiratory infection",
+                "sputum analysis for respiratory infection",
+                "blood test complete blood count for infection",
+                "chest x-ray for respiratory infection",
+                "CT scan for lung assessment",
+                "pulmonary function test for chronic respiratory issues"
+            ],
+            "treatment": [
+                "antibiotics treatment for respiratory infection",
+                "nebulizer therapy for respiratory distress",
+                "oxygen therapy for low oxygen saturation",
+                "bronchodilator medication for airway obstruction",
+                "steroids for inflammation in severe respiratory cases",
+                "antiviral drugs for viral respiratory infections"
+            ],
+            "monitoring": [
+                "vital signs monitoring for respiratory health",
+                "oxygen saturation monitoring using pulse oximeter",
+                "respiratory rate and depth monitoring",
+                "peak expiratory flow rate monitoring for asthma"
+            ]
+        },
+        "infectious": {
+            "diagnostic": [
+                "blood culture for detecting systemic infections",
+                "urine culture for urinary tract infection",
+                "chest x-ray to identify pneumonia",
+                "PCR test for infectious diseases like COVID-19",
+                "stool analysis for gastrointestinal infections",
+                "skin biopsy for dermatological infections"
+            ],
+            "treatment": [
+                "antibiotics for bacterial infections",
+                "antiviral medications for viral infections",
+                "antipyretics for fever management",
+                "rehydration therapy for dehydration caused by infection",
+                "antifungal therapy for fungal infections",
+                "immune boosters for recurrent infections"
+            ],
+            "monitoring": [
+                "temperature monitoring every 4 hours",
+                "vital signs monitoring for infection progression",
+                "fluid balance monitoring to detect dehydration",
+                "white blood cell count monitoring for infection response"
+            ]
+        },
+        "cardiovascular": {
+            "diagnostic": [
+                "ECG for cardiac rhythm abnormalities",
+                "echocardiogram for heart function",
+                "blood test for cardiac biomarkers",
+                "angiogram for coronary artery blockages",
+                "stress test for exercise-induced cardiac issues",
+                "Doppler ultrasound for blood flow assessment"
+            ],
+            "treatment": [
+                "antihypertensive therapy for high blood pressure",
+                "anticoagulants for preventing blood clots",
+                "defibrillation for life-threatening arrhythmias",
+                "cardiac catheterization for blocked arteries",
+                "beta-blockers for arrhythmia management",
+                "lifestyle modifications for long-term cardiovascular health"
+            ],
+            "monitoring": [
+                "continuous ECG monitoring for arrhythmias",
+                "blood pressure monitoring",
+                "cholesterol level tracking for long-term care",
+                "heart rate variability monitoring"
+            ]
+        },
+        "neurological": {
+            "diagnostic": [
+                "MRI for brain and spinal cord imaging",
+                "CT scan for head trauma assessment",
+                "EEG for detecting seizures",
+                "lumbar puncture for cerebrospinal fluid analysis",
+                "nerve conduction studies for peripheral neuropathy"
+            ],
+            "treatment": [
+                "anticonvulsants for seizure management",
+                "physical therapy for rehabilitation",
+                "thrombolytics for ischemic stroke",
+                "pain management for chronic neurological conditions",
+                "surgical intervention for brain tumors"
+            ],
+            "monitoring": [
+                "neurological status checks",
+                "ICP (intracranial pressure) monitoring for head injuries",
+                "motor function assessments",
+                "cognitive status tracking"
+            ]
+        },
+        "gastrointestinal": {
+            "diagnostic": [
+                "endoscopy for upper GI tract assessment",
+                "colonoscopy for lower GI tract evaluation",
+                "stool culture for infection diagnosis",
+                "abdominal ultrasound for organ imaging",
+                "liver function tests for hepatic issues"
+            ],
+            "treatment": [
+                "probiotics for restoring gut flora",
+                "antibiotics for bacterial GI infections",
+                "acid-reducing medications for ulcers",
+                "IV fluids for severe dehydration",
+                "surgical repair for perforations or obstructions"
+            ],
+            "monitoring": [
+                "bowel movement tracking",
+                "hydration status monitoring",
+                "weight monitoring for malnutrition",
+                "pain level assessments in abdominal conditions"
+            ]
+        },
+        "dermatological": {
+            "diagnostic": [
+                "skin biopsy for identifying rashes or lesions",
+                "allergy testing for skin hypersensitivity",
+                "Wood's lamp examination for fungal infections",
+                "patch testing for contact dermatitis"
+            ],
+            "treatment": [
+                "topical steroids for inflammation",
+                "antifungal creams for fungal infections",
+                "antihistamines for allergic reactions",
+                "antibiotics for bacterial skin infections",
+                "moisturizers for eczema management"
+            ],
+            "monitoring": [
+                "skin lesion tracking",
+                "healing progress monitoring",
+                "infection site monitoring",
+                "itching and redness assessments"
+            ]
         }
+    }
+
 
     def _get_search_queries(self, condition_type: str, category: str) -> List[str]:
         """Generate search queries based on condition type and category."""
